@@ -7,13 +7,13 @@ Skills are organized into bucket folders under `skills/`:
 - `in-progress/`: beta: public on purpose, feedback wanted, not shipped in the plugin
 - `deprecated/`: no longer used
 
-This is a fork of `mattpocock/skills`. Its plugin, `monopoly-skills`, ships a curated set: exactly the skills in `.claude-plugin/plugin.json`'s `skills` array. Every skill in `engineering/`, `productivity/` (the **promoted** buckets) or `pstack/` must have a reference in the top-level `README.md`, which marks the shipped ones; promoted skills outside the array stay in the repo as upstream left them, ready to add. Skills in `misc/`, `in-progress/`, and `deprecated/` must not appear in either. Why the engineering skills use a GitHub Projects board as their only tracker lives in [.agents/adr/0003-github-projects-only-tracker.md](./.agents/adr/0003-github-projects-only-tracker.md).
+This is a fork of `mattpocock/skills`. Its plugin, `monopoly-skills`, ships a curated set: exactly the skills in `.claude-plugin/plugin.json`'s `skills` array. Every skill in that array must be listed in the top-level `README.md`, and every skill in `engineering/`, `productivity/` (the **promoted** buckets) or `pstack/` must be listed in its bucket's `README.md`. Promoted skills outside the array stay in the repo as upstream left them, ready to add. Skills in `misc/`, `in-progress/`, and `deprecated/` must not appear in either. Why the engineering skills use a GitHub Projects board as their only tracker lives in [.agents/adr/0003-github-projects-only-tracker.md](./.agents/adr/0003-github-projects-only-tracker.md).
 
 Install commands are copied verbatim from [.agents/install-block.md](./.agents/install-block.md). `.claude-plugin/marketplace.json` makes the repo its own single-plugin marketplace, which is this fork's documented install route. Run `claude plugin validate . --strict` after touching either manifest. Why a Claude plugin but not (yet) a Codex one lives in [.agents/adr/0002-ship-as-a-claude-code-plugin.md](./.agents/adr/0002-ship-as-a-claude-code-plugin.md).
 
 Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
 
-Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`. The promoted buckets' `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**; non-promoted bucket `README.md`s (`misc/`, `in-progress/`) use a flat list.
+Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`. The promoted buckets' `README.md`s and `pstack/README.md` group entries into **User-invoked** and **Model-invoked**; non-promoted bucket `README.md`s (`misc/`, `in-progress/`) use a flat list.
 
 This fork has no human-facing docs pages: each `SKILL.md` is the documentation. Upstream's `docs/` tree is deleted, so when merging upstream, resolve any change under `docs/` by keeping it deleted.
 

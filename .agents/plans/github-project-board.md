@@ -114,7 +114,8 @@ To do on the new machine:
 - [x] Install `gh` from GitHub's apt repository, never the snap. Run `gh auth login`, then `gh auth refresh -s project`. (Done on 20.04 after all; implementation happened there.)
 - [x] Merge `teach-unslop` into this branch.
 - [x] Run the **verify** checks in [Facts](#facts) that the implementation depends on. The ones still marked **verify** need the test board.
-- [x] Implement decisions 1 to 37, except the root `README.md`, which waits on the user's call: a short fork README, or edits to upstream's.
+- [x] Implement decisions 1 to 37. The root `README.md` became a short fork README rather than an edit of upstream's (the user's call, 2026-09-14).
+- [x] Throwaway repo created: private `shoang22/board-test`, cloned at `~/workspace/toys/board-test`. From there, `claude --plugin-dir ~/workspace/toys/skills` loads the plugin without installing it.
 - [ ] Pass [Verification](#verification).
 - [ ] Merge to `main`, deleting this file. Install with `/plugin marketplace add shoang22/skills`, then install `monopoly-skills`.
 
