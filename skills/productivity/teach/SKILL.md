@@ -44,6 +44,19 @@ Fluency can give the user an illusory sense of mastery, but storage strength is 
 - Spacing (distributing practice over time)
 - Interleaving (mixing up different but related topics in practice - for skills practice only)
 
+## Writing
+
+Everything in this workspace is prose a human will re-read later. Lessons, reference documents, quiz questions and their feedback, `MISSION.md`, learning records and `NOTES.md` are all covered by this.
+
+Invoke the `unslop` skill before you write any of them, and apply it again to the draft before you save. Teaching material is where AI tells do the most damage. Puffery and vague attribution ("experts believe", "a pivotal moment") are the exact failure the citation rule exists to prevent, and a lesson that reads like generated filler will not be trusted or revisited.
+
+Two of its rules matter most here:
+
+- Say what a thing does, not how it feels. "The compiler rejects a renamed column" teaches something. "Types that follow your schema" does not.
+- Be specific. If a sentence could appear unchanged in a lesson on a different topic, cut it.
+
+If the `unslop` skill is not installed, hold to the same standard anyway. No puffery, no em dashes, no title case headings, no decorative emoji, plain words over fancy ones, active voice, one idea per sentence.
+
 ## Lessons
 
 A lesson is the main thing you produce: the unit in which knowledge and skills reach the user. Each lesson is one self-contained HTML file, saved to `./lessons/` and titled `0001-<dash-case-name>.html` where the number increments each time.
