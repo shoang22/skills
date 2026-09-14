@@ -39,6 +39,16 @@ If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The ma
 
 Create files lazily: only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
 
+## Reading the domain docs
+
+Before exploring, read `CONTEXT.md` at the root, or, when `CONTEXT-MAP.md` exists, each per-context `CONTEXT.md` it points at that bears on the topic. Read the ADRs in `docs/adr/` that touch the area, plus `src/<context>/docs/adr/` in a multi-context repo. When any of these don't exist, proceed silently; the lazy-creation rule above covers them.
+
+Name domain concepts in the glossary's terms in everything you write: issue titles, refactor proposals, hypotheses, test names. A concept the glossary lacks is a signal: either you're inventing language the project doesn't use, or there's a real gap to resolve.
+
+When your output contradicts an existing ADR, say so explicitly rather than silently overriding it:
+
+> _Contradicts ADR-0007 (event-sourced orders), but worth reopening because…_
+
 ## During the session
 
 ### Challenge against the glossary

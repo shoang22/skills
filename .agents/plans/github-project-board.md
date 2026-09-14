@@ -83,11 +83,11 @@ Work on branch `github-project-board`. Merge to `main` only after the test pass 
 ### Files removed
 
 28. From `skills/engineering/setup-matt-pocock-skills/`: `issue-tracker-github.md`, `issue-tracker-gitlab.md`, `issue-tracker-local.md`, `triage-labels.md`, `domain.md`.
-29. `skills/engineering/wayfinder/` and `docs/engineering/wayfinder.md`.
+29. `skills/engineering/wayfinder/`, the whole `docs/` tree, and `.agents/writing-docs.md`. The fork has no human-facing docs pages: each `SKILL.md` is the documentation (decided 2026-09-14, replacing the earlier plan to re-sync the pages).
 
 ### Docs
 
-30. Update every doc that describes the old tracker. Known hits: `docs/engineering/setup-matt-pocock-skills.md` (rewrite), `CONTEXT.md` (the Issue tracker and triage role definitions), `.agents/adr/0001-explicit-setup-pointer-only-for-hard-dependencies.md`, `.out-of-scope/mainstream-issue-trackers-only.md`, the root `README.md` (install and setup sections), `skills/engineering/README.md`, `skills/engineering/ask-matt/SKILL.md` (the wayfinder route and "Custom issue trackers also work"), and the `docs/engineering/` pages for to-spec, to-tickets, triage, code-review, domain-modeling and research.
+30. Update every remaining doc that describes the old tracker: `CONTEXT.md` (the Issue tracker and triage role definitions), `.agents/adr/0001-explicit-setup-pointer-only-for-hard-dependencies.md`, `.out-of-scope/mainstream-issue-trackers-only.md`, the root `README.md` (install and setup sections), `skills/engineering/README.md`, and `skills/engineering/ask-matt/SKILL.md` (the wayfinder route and "Custom issue trackers also work").
 31. Add an ADR at the next free number in `.agents/adr/`: "GitHub Projects is the only tracker; no committed tracker config". Record why: the user wants the tracker to be real GitHub infrastructure for a Scrum team, not a markdown file in each repo.
 
 ### Plugin and personal skills
@@ -111,10 +111,10 @@ Done on the old machine (Ubuntu 20.04) before this file was pushed:
 
 To do on the new machine:
 
-- [ ] Install `gh` from GitHub's apt repository, never the snap. Run `gh auth login`, then `gh auth refresh -s project`.
-- [ ] Merge `teach-unslop` into this branch.
-- [ ] Run the **verify** checks in [Facts](#facts) that the implementation depends on.
-- [ ] Implement decisions 1 to 37.
+- [x] Install `gh` from GitHub's apt repository, never the snap. Run `gh auth login`, then `gh auth refresh -s project`. (Done on 20.04 after all; implementation happened there.)
+- [x] Merge `teach-unslop` into this branch.
+- [x] Run the **verify** checks in [Facts](#facts) that the implementation depends on. The ones still marked **verify** need the test board.
+- [x] Implement decisions 1 to 37, except the root `README.md`, which waits on the user's call: a short fork README, or edits to upstream's.
 - [ ] Pass [Verification](#verification).
 - [ ] Merge to `main`, deleting this file. Install with `/plugin marketplace add shoang22/skills`, then install `monopoly-skills`.
 
@@ -122,18 +122,19 @@ To do on the new machine:
 
 Researched on 2026-09-13. Sources are the GitHub docs pages named in each item.
 
-- **Views.** The GraphQL API has `createProjectV2View` and `updateProjectV2View` (GraphQL reference, Projects). Layouts are `BOARD_LAYOUT`, `TABLE_LAYOUT`, `ROADMAP_LAYOUT`. The update input takes `filter` and a `configuration` object. Community threads saying views can't be created through the API are out of date. **Verify** that `ProjectV2ViewConfigurationInput` can set the board's column field, grouping and sort. If it can't, setup prints those as manual steps.
-- **Sprint field.** `createProjectV2Field` accepts `dataType: ITERATION` with `iterationConfiguration { duration (days), startDate, iterations }`. `gh project field-create` only supports `TEXT`, `SINGLE_SELECT`, `DATE`, `NUMBER`, so the sprint field needs `gh api graphql`.
-- **Editing columns.** `updateProjectV2Field` can change single-select options. **Verify** whether sending the options list drops options you leave out, or clears existing cards' values. Decision 19 forbids deleting anything, so pass every existing option back with its ID.
+- **Views.** The GraphQL API has `createProjectV2View` and `updateProjectV2View` (GraphQL reference, Projects). Layouts are `BOARD_LAYOUT`, `TABLE_LAYOUT`, `ROADMAP_LAYOUT`. Community threads saying views can't be created through the API are out of date. Verified by schema introspection on 2026-09-14: create takes `name`, `layout` and `configuration`; update also takes `filter`; `ProjectV2ViewConfigurationInput` only holds `visibleFieldIds`. Grouping, sort and a board's column field can't be set, so setup prints them as manual steps. **Verify** on the test board that a new board-layout view uses `Status` for its columns by default.
+- **Sprint field.** `createProjectV2Field` accepts `dataType: ITERATION` with `iterationConfiguration { duration (days), startDate, iterations }`, where each iteration is `{ title, startDate, duration }`. `gh project field-create` only supports `TEXT`, `SINGLE_SELECT`, `DATE`, `NUMBER`, so the sprint field needs `gh api graphql`. **Verify** on the test board what an empty `iterations` list produces.
+- **Editing columns.** Verified by schema introspection: `updateProjectV2Field`'s `singleSelectOptions` overwrite the existing options. An option sent with its `id` keeps its identity, so cards keep their value; `name`, `color` and `description` are required on every option. Setup sends every existing option back with its `id`.
 - **Workflows.** No mutation creates or enables a workflow; only `deleteProjectV2Workflow` exists, and workflows can be read. "Item closed → Done" and "Pull request merged → Done" are on by default on a new board. Auto-add and auto-archive are UI-only.
 - **Copying a board.** `copyProjectV2` and `gh project copy` copy views, custom fields and workflows (except auto-add), but not items or repo links. Not used. It's the fallback if view configuration through the API proves too limited: keep one template board and copy it.
 - **Hierarchy fields.** Projects have built-in `Parent issue` and `Sub-issue progress` fields. A view can group or filter by `Parent issue`.
-- **Adding issues.** `gh issue create --project "<board title>"` creates the issue and adds it to the board in one step. **Verify** on the installed `gh` version.
-- **Filters.** View filters use field names, for example `sprint:@current` and `no:sprint`. **Verify** the exact syntax in "Filtering projects".
+- **Issue commands.** Verified on `gh` 2.100.0: `gh issue create` takes `--project`, `--parent` and `--blocked-by`; `gh issue edit` takes `--add-project`, `--add-sub-issue` and `--add-blocked-by`; `gh issue close --reason "not planned"` exists; `gh project item-edit --url <issue> --field <name> --value <value>` sets a field by name, with no IDs.
+- **Filters.** Verified in "Filtering projects": `iteration:@current`, `no:<field>`, `status:"Needs triage","Needs info"`, `-label:x`, `is:open`. **Verify** on the test board that a field named `Sprint` filters as `sprint:@current` and `no:sprint`.
+- **Hidden skill.** Verified in the Claude Code skills docs: `user-invocable: false` hides a skill from the `/` menu and keeps it model-invocable.
 
 ## Verification
 
-Create a throwaway GitHub repo under the user's account for this; ask the user before creating it. Done means every item below holds:
+Run this in a **fresh** Claude Code session, not the one that wrote the skills, so each skill is judged on its text alone rather than on what its author already knows. Load the plugin from the fork first. Create a throwaway GitHub repo under the user's account; ask the user before creating it. Done means every item below holds:
 
 - [ ] Setup on a fresh repo creates and links the board with all seven columns in order, the three fields, three views and three labels. The only manual steps it prints are auto-add and anything the view-configuration **verify** check ruled out.
 - [ ] A second setup run changes nothing and reports that everything exists.

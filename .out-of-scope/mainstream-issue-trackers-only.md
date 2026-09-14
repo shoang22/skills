@@ -1,25 +1,13 @@
-# Issue tracker integrations are limited to mainstream tools
+# Issue trackers other than GitHub Projects
 
-`setup-matt-pocock-skills` only offers first-class support for **mainstream** issue trackers. Requests to add support for niche, new, or single-vendor experimental trackers are out of scope.
+This fork supports exactly one issue tracker: a GitHub Projects board linked to the repo. Requests to support GitLab, Linear, Jira, local markdown files, or any other tracker are out of scope, however mainstream the tool.
 
 ## Why this is out of scope
 
-Every issue-tracker backend hard-codes a CLI shape into the skills (commands, flags, output parsing). Each new backend is permanent maintenance surface, because it has to keep working as the tool's CLI evolves, and it has to keep being tested against `/to-spec`, `/to-tickets`, `/triage`, and friends. That cost is only worth paying for trackers a meaningful fraction of users actually have.
+The engineering skills lean on things only GitHub provides: Projects columns and iteration fields, native sub-issues and blocking links, and the `gh` CLI that drives all of it. Fixing the tracker is what let the per-repo config files go away and the board operations move into one skill, `github-board`. A second tracker would bring back both. [ADR 0003](../.agents/adr/0003-github-projects-only-tracker.md) records the decision.
 
-"Mainstream" is a judgment call, not a numeric bar:
-
-- GitHub, GitLab, and Backlog.md are the kind of tools we'd consider mainstream: broadly known, widely used, well past the experimental phase.
-- A brand-new agent-focused tool with a few hundred GitHub stars is not, no matter how interesting the design.
-
-Stars, age, and download counts are useful signals when making the call but none of them is the rule. The rule is: would a typical engineer recognise this tool and have plausibly chosen it for their team?
-
-The escape hatches for non-mainstream trackers already exist:
-
-- `local markdown` for lightweight in-repo tracking.
-- `other/custom` for users who want to wire something up themselves.
-
-Neither requires the core skills to know about the specific tool.
+Upstream [mattpocock/skills](https://github.com/mattpocock/skills) supports GitHub, GitLab, local markdown, and trackers described in prose. Use it if you need one of those.
 
 ## Prior requests
 
-- #99: "Add dex as an issue tracker backend" (dex was ~3 months old and ~300 stars at the time of the request)
+- Upstream #99: "Add dex as an issue tracker backend", rejected there under upstream's mainstream-only rule before this fork narrowed support to GitHub Projects.
