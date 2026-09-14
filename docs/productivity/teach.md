@@ -51,6 +51,8 @@ A **lesson** is one self-contained HTML file, short enough to finish in a sittin
 
 The split worth knowing: lessons are rarely revisited, reference documents are. So the compressed essence of a lesson (the syntax table, the algorithm, the pose sequence, the glossary) belongs in `reference/`, not buried in the lesson that introduced it.
 
+Prose quality is part of the contract. Before writing a lesson, a reference document, a quiz or a learning record, `teach` invokes the `unslop` skill and applies it again to the draft, so the output does not read like generated filler. Two of its rules carry the most weight in a lesson: say what a thing does rather than how it feels, and cut any sentence that would sit unchanged in a lesson on a different topic. `unslop` is a separate skill and is not shipped in this plugin. If you don't have it installed, `teach` falls back to holding the same standard from memory, which is weaker.
+
 Lessons are built from **components** in `assets/`: stylesheets, quiz widgets, simulators, diagram helpers. Reuse is the default. The agent reads `assets/` before authoring a lesson and builds from what is there, and anything new that a second lesson could use is written as a component rather than inlined. The shared stylesheet is the first component every workspace earns; it is what stops the output being a pile of one-offs.
 
 ## Common questions
